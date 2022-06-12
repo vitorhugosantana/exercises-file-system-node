@@ -1,3 +1,5 @@
+const path = require ('path')
+const fs = require ('fs')
 /*
    TODO 1:  Deve retornar o caminho para a pasta src/data 
             independente de la base de sistema operacional 
@@ -7,7 +9,12 @@
 */
 
 const getDirectoryDataPath = () => {
+  var absolutePath = path.resolve ('../data')
+  console.log (absolutePath)
+
   // Implemente aqui o Todo 1
+
+
 };
 
 /*
@@ -21,6 +28,17 @@ const getDirectoryDataPath = () => {
            c) Se ocorrer algum erro, retorne a mensagem: "Error creating file"
 */
 const createFile = async (data, fileName) => {
+    const savePath = `../data/${fileName}`
+    try{
+    fs.writeFileSync(savePath,data)
+
+    console.log (fileName + ' written' )
+  }
+  catch(err) {
+    if(err){
+      console.log ('Error creating file')
+    }
+  }
   // Implemente aqui o Todo 2
 };
 
@@ -35,6 +53,20 @@ const createFile = async (data, fileName) => {
            c) Se ocorrer algum erro, retorne a mensagem: "Error renaming file"
 */
 const renameFile = async (currentName, newName) => {
+
+    const oldFile = `../data/${currentName}`
+    const newFile = `../data/${newName}`
+    try{
+        fs.renameSync(oldFile,newFile)
+
+        console.log (currentName + ' renamed to ' + newName)
+      }
+      catch(err) {
+        if(err){
+          console.log (err)
+          console.log ('Error renaming file')
+        }
+      }
   // Implemente aqui o Todo 3
 };
 
@@ -49,7 +81,26 @@ const renameFile = async (currentName, newName) => {
            c) Se ocorrer algum erro, retorne a mensagem: "Error deleting file"
 */
 const deleteFile = async (fileName) => {
+
+    const filePath = `../data/${fileName}`
+    try{
+      fs.unlinkSync(filePath)
+
+      console.log (fileName + ' Deleted successfully')
+    }
+    catch(err) {
+      if(err){
+        console.log (err)
+        console.log ('Error deleting file')
+      }
+    }
+
   // Implemente aqui o Todo 4
 };
 
 module.exports = { getDirectoryDataPath, createFile, renameFile, deleteFile };
+
+getDirectoryDataPath()
+createFile('Oi','Arquivo.txt')
+renameFile ('Arquivo.txt', 'Arquivo2.txt')
+deleteFile ('Arquivo2.txt')
